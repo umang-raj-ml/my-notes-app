@@ -16,12 +16,8 @@ function saveNotes(notes: Note[]): void {
 }
 
 function App() {
-  const [notes, setNotes] = useState<Note[]>([])
+  const [notes, setNotes] = useState<Note[]>(loadNotes)
   const [editingId, setEditingId] = useState<string | null>(null)
-
-  useEffect(() => {
-    setNotes(loadNotes())
-  }, [])
 
   useEffect(() => {
     saveNotes(notes);
@@ -46,7 +42,7 @@ function App() {
     setEditingId(id);
   }
 
-  function editNode(values: {title: string; content: string}) {
+  function editNote(values: {title: string; content: string}) {
     setNotes(notes => 
       notes.map(n => n.id === editingId ? {...n, ...values } : n)
     )
@@ -62,7 +58,7 @@ function App() {
 
         {editingId && editingNote ? (
           <NoteForm 
-            onSubmit={editNode}
+            onSubmit={editNote}
             initial={{title: editingNote.title, content: editingNote.content}}
             submitLabel='Save'
           />
